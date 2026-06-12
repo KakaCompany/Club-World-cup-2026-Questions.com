@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="ku" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>جامی جیهانی ٢٠٢٦ — پرسیارەکان</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0a0e1a;
+        --surface: #111827;
+        --surface2: #1a2235;
+        --accent: #f5a623;
+        --accent2: #e8392d;
+        --text: #f0f4ff;
+        --text2: #8b9ab8;
+        --border: rgba(255, 255, 255, 0.08);
+        --radius: 14px;
+        --gold: #f5a623;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Vazirmatn", sans-serif;
+        direction: rtl;
+        min-height: 100vh;
+        padding: 0;
+      }
+
+      /* HERO */
+      .hero {
+        background: linear-gradient(
+          135deg,
+          #0a0e1a 0%,
+          #1a1030 50%,
+          #0a1628 100%
+        );
+        padding: 3rem 2rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid var(--border);
+      }
+      .hero::before {
+        content: "⚽";
+        position: absolute;
+        font-size: 200px;
+        opacity: 0.04;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(245, 166, 35, 0.12);
+        border: 1px solid rgba(245, 166, 35, 0.3);
+        color: var(--gold);
+        font-size: 12px;
+        padding: 5px 14px;
+        border-radius: 30px;
+        margin-bottom: 1.2rem;
+        letter-spacing: 0.05em;
+      }
+      .dot-live {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #ef4444;
+        animation: pulse 1.4s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.2;
+        }
+      }
+      .hero h1 {
+        font-size: clamp(1.8rem, 5vw, 2.8rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(90deg, #fff 0%, var(--gold) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .hero p {
+        color: var(--text2);
+        font-size: 14px;
+        margin-bottom: 1.5rem;
+      }
+      .hero-flags {
+        font-size: 22px;
+        letter-spacing: 6px;
+        opacity: 0.7;
+      }
+
+      /* MAIN */
+      .container {
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+      }
+
+      /* SECTION HEADER */
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 1.25rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .section-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+      .icon-yellow {
+        background: rgba(245, 166, 35, 0.15);
+      }
+      .icon-blue {
+        background: rgba(59, 130, 246, 0.15);
+      }
+      .section-title-text h2 {
+        font-size: 17px;
+        font-weight: 600;
+        color: var(--text);
+      }
+      .section-title-text p {
+        font-size: 12px;
+        color: var(--text2);
+        margin-top: 2px;
+      }
+
+      /* CARD */
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        margin-bottom: 1.25rem;
+      }
+      .card:last-child {
+        margin-bottom: 0;
+      }
+
+      /* QUESTION BLOCK */
+      .q-block {
+        margin-bottom: 1.4rem;
+      }
+      .q-block:last-child {
+        margin-bottom: 0;
+      }
+      .q-label {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 0.6rem;
+      }
+      .q-num {
+        min-width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        background: rgba(245, 166, 35, 0.15);
+        color: var(--gold);
+        font-size: 12px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .q-num.blue {
+        background: rgba(59, 130, 246, 0.15);
+        color: #60a5fa;
+      }
+      .q-text {
+        font-size: 14px;
+        color: var(--text);
+        line-height: 1.6;
+        font-weight: 500;
+      }
+      .q-input {
+        width: 100%;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 11px 14px;
+        color: var(--text);
+        font-family: "Vazirmatn", sans-serif;
+        font-size: 14px;
+        direction: rtl;
+        transition: border-color 0.2s;
+        outline: none;
+      }
+      .q-input:focus {
+        border-color: rgba(245, 166, 35, 0.5);
+        background: rgba(245, 166, 35, 0.04);
+      }
+      .q-input::placeholder {
+        color: var(--text2);
+        opacity: 0.6;
+      }
+
+      .divider {
+        height: 1px;
+        background: var(--border);
+        margin: 1.4rem 0;
+      }
+
+      /* SECTION SPACING */
+      .section-wrap {
+        margin-bottom: 2.5rem;
+      }
+
+      /* SUBMIT BTN */
+      .submit-wrap {
+        text-align: center;
+        margin-top: 2rem;
+      }
+      .btn-submit {
+        background: linear-gradient(135deg, var(--gold), #e8900a);
+        color: #0a0e1a;
+        font-family: "Vazirmatn", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        padding: 13px 40px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition:
+          transform 0.15s,
+          opacity 0.15s;
+        letter-spacing: 0.02em;
+      }
+      .btn-submit:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+      .btn-submit:active {
+        transform: scale(0.98);
+      }
+
+      /* RESULT MODAL */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+      .modal-overlay.open {
+        display: flex;
+      }
+      .modal {
+        background: var(--surface);
+        border: 1px solid rgba(245, 166, 35, 0.25);
+        border-radius: 20px;
+        padding: 2rem;
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
+        animation: slideUp 0.3s ease;
+      }
+      @keyframes slideUp {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      .modal-icon {
+        font-size: 48px;
+        margin-bottom: 1rem;
+      }
+      .modal h3 {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      .modal p {
+        color: var(--text2);
+        font-size: 14px;
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
+      }
+      .modal-answers {
+        text-align: right;
+        background: var(--surface2);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .modal-answer-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 13px;
+      }
+      .modal-answer-row:last-child {
+        border-bottom: none;
+      }
+      .modal-q {
+        color: var(--text2);
+        flex: 1;
+      }
+      .modal-a {
+        color: var(--gold);
+        font-weight: 500;
+        text-align: left;
+      }
+      .btn-close {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-family: "Vazirmatn", sans-serif;
+        font-size: 14px;
+        padding: 10px 28px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      .btn-close:hover {
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      /* PROGRESS */
+      .progress-bar-wrap {
+        background: var(--surface2);
+        border-radius: 4px;
+        height: 4px;
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+      }
+      .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--gold), #e8390d);
+        border-radius: 4px;
+        width: 0%;
+        transition: width 0.3s;
+      }
+      .progress-label {
+        font-size: 12px;
+        color: var(--text2);
+        margin-bottom: 6px;
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hero">
+      <div class="hero-badge">
+        <span class="dot-live"></span> زیندوو — جامی جیهانی ٢٠٢٦
+      </div>
+      <h1>🏆 پرسیارەکانت بنووسە</h1>
+      <p>ئەمریکا · مەکسیک · کەنەدا &nbsp;|&nbsp; ١١ی ئەمرز – ١٩ی تموز ٢٠٢٦</p>
+      <div class="hero-flags">🇫🇷 🇧🇷 🇦🇷 🇩🇪 🇪🇸 🇵🇹 🇬🇧 🇮🇶</div>
+    </div>
+
+    <div class="container">
+      <div class="progress-label">
+        <span>پرسیارەکان</span>
+        <span id="prog-count">0 / 10</span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-bar"></div>
+      </div>
+
+      <!-- SECTION 1 -->
+      <div class="section-wrap">
+        <div class="section-header">
+          <div class="section-icon icon-yellow">🌍</div>
+          <div class="section-title-text">
+            <h2>پرسیاری یەکەم — هەڵبژاردەکان</h2>
+            <p>بۆچی باشترین هەڵبژاردە دەبێت؟</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="q-block">
+            <div class="q-label">
+              <span class="q-num">١</span
+              ><span class="q-text">سەپۆرتی کام هەڵبژاردە دەکەیت؟</span>
+            </div>
+            <input
+              class="q-input"
+              type="text"
+              id="q1"
+              placeholder="بنووسە..."
+              oninput="updateProgress()"
+            />
+          </div>
+          <div class="divider"></div>
+          <div class="q-block">
+            <div class="q-label">
+              <span class="q-num">٢</span
+              ><span class="q-text">کام هەڵبژاردە دەبێتە ئەسپی ڕەش؟</span>
+            </div>
+            <input
+              class="q-input"
+              type="text"
+              id="q2"
+              placeholder="بنووسە..."
+              oninput="updateProgress()"
+            />
+          </div>
+          <div class="divider"></div>
+          <div class="q-block">
+            <div class="q-label">
+              <span class="q-num">٣</span
+              ><span class="q-text"
+                >کام هەڵبژاردە دەبێتە خراپترین هەڵبژاردە؟</span
+              >
+            </div>
+            <input
+              class="q-input"
+              type="text"
+              id="q3"
+              placeholder="بنووسە..."
+              oninput="updateProgress()"
+            />
+          </div>
+          <div class="divider"></div>
+          <div class="q-block">
+            <div class="q-label">
+              <span class="q-num">٤</span
+              ><span class="q-text"
+                >بەڕای تۆ کام هەڵبژاردەی بەهێز لە کۆمەڵەکان دەردەکرێت؟</span
+              >
+            </div>
+            <input
+              class="q-input"
+              type="text"
+              id="q4"
+              placeholder="بنووسە..."
+              oninput="updateProgress()"
+            />
+          </div>
+          <div class="divider"></div>
+          <div class="q-block">
+            <div class="q-label">
+              <span class="q-num">٥</span
+              ><span class="q-text">کام هەڵبژاردە جامی جیهانی دەباتەوە؟</span>
+            </div>
+            <input
+              class="q-input"
+              type="text"
+              id="q5"
+              placeholder="بنووسە..."
+              oninput="updateProgress()"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2 -->
+      <div class="section-wrap">
+        <div class="section-header">
+          <div class="section-icon icon-blue">⚽</div>
+          <div class="section-title-text">
+            <h2>پرسیاری دووەم — یاریزانەکان</h2>
+            <p>کێ دەبێتە ستێرەی جامی جیهانی؟</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="q-block">
+            <div class="q-label">
+              <span class="q-num blue">١</span
+              ><span class="q-text">کێ دەبێتە باشترین یاریزان؟</span>
+            </div>
+            <input
+              class="q-input"
+              type="text"
+              id="q6"
+              placeholder="بنووسە..."
+              oninput="updateProgress()"
+            />
+          </div>
+          <div class="divider"></div>
+          <div class="q-block">
+            <div class="q-label">
+              <span class="q-num blue">٢</span
+              ><span class="q-text">کێ دەبێتە باشترین یاریزانی لاو؟</span>
+            </div>
+            <input
+              class="q-input"
+              type="text"
+              id="q7"
+              placeholder="بنووسە..."
+              oninput="updateProgress()"
+            />
+          </div>
+          <div class="divider"></div>
+          <div class="q-block">
+            <div class="q-label">
+              <span class="q-num blue">٣</span
+              ><span class="q-text">کێ دەبێتە گۆڵکاری جامی جیهانی؟</span>
+            </div>
+            <input
+              class="q-input"
+              type="text"
+              id="q8"
+              placeholder="بنووسە..."
+              oninput="updateProgress()"
+            />
+          </div>
+          <div class="divider"></div>
+          <div class="q-block">
+            <div class="q-label">
+              <span class="q-num blue">٤</span
+              ><span class="q-text">کێ دەبێتە ئەسیستکاری جامی جیهانی؟</span>
+            </div>
+            <input
+              class="q-input"
+              type="text"
+              id="q9"
+              placeholder="بنووسە..."
+              oninput="updateProgress()"
+            />
+          </div>
+          <div class="divider"></div>
+          <div class="q-block">
+            <div class="q-label">
+              <span class="q-num blue">٥</span
+              ><span class="q-text">کێ دەبێتە باشترین گۆلچی جامی جیهانی؟</span>
+            </div>
+            <input
+              class="q-input"
+              type="text"
+              id="q10"
+              placeholder="بنووسە..."
+              oninput="updateProgress()"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="submit-wrap">
+        <button class="btn-submit" onclick="submitAnswers()">
+          تۆمارکردنی وەڵامەکان 🏆
+        </button>
+      </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modal">
+      <div class="modal">
+        <div class="modal-icon">🏆</div>
+        <h3>پێشبینیەکانت تۆمارکران!</h3>
+        <p>
+          ئەمانە پێشبینیەکانتن بۆ جامی جیهانی ٢٠٢٦. مانەوەی جامی جیهانی دڵخۆش
+          بێت!
+        </p>
+        <div class="modal-answers" id="modal-answers"></div>
+        <button class="btn-close" onclick="closeModal()">داخستن</button>
+      </div>
+    </div>
+
+    <script>
+      const questions = [
+        "سەپۆرتی کام هەڵبژاردە",
+        "ئەسپی ڕەش",
+        "خراپترین هەڵبژاردە",
+        "بەهێزترین لە کۆمەڵ",
+        "قازانجکەری جامی جیهانی",
+        "باشترین یاریزان",
+        "باشترین یاریزانی لاو",
+        "گۆڵکاری جامی جیهانی",
+        "ئەسیستکاری جامی جیهانی",
+        "باشترین گۆلچی",
+      ];
+
+      function updateProgress() {
+        let filled = 0;
+        for (let i = 1; i <= 10; i++) {
+          if (document.getElementById("q" + i).value.trim()) filled++;
+        }
+        document.getElementById("prog-count").textContent = filled + " / 10";
+        document.getElementById("progress-bar").style.width =
+          (filled / 10) * 100 + "%";
+      }
+
+      function submitAnswers() {
+        const answers = [];
+        for (let i = 1; i <= 10; i++) {
+          answers.push(document.getElementById("q" + i).value.trim());
+        }
+        const filled = answers.filter((a) => a).length;
+        if (filled === 0) {
+          alert("تکایە لانی کەم یەک وەڵام بنووسە!");
+          return;
+        }
+        const container = document.getElementById("modal-answers");
+        container.innerHTML = "";
+        answers.forEach((a, i) => {
+          if (a) {
+            const row = document.createElement("div");
+            row.className = "modal-answer-row";
+            row.innerHTML = `<span class="modal-q">${questions[i]}</span><span class="modal-a">${a}</span>`;
+            container.appendChild(row);
+          }
+        });
+        document.getElementById("modal").classList.add("open");
+      }
+
+      function closeModal() {
+        document.getElementById("modal").classList.remove("open");
+      }
+
+      document.getElementById("modal").addEventListener("click", function (e) {
+        if (e.target === this) closeModal();
+      });
+    </script>
+  </body>
+</html>

@@ -10,6 +10,71 @@
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
+      .dd-wrap {
+        position: relative;
+      }
+      .dd-trigger {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #1a2235;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        padding: 11px 14px;
+        cursor: pointer;
+      }
+      .dd-trigger.open {
+        border-color: rgba(245, 166, 35, 0.5);
+      }
+      .dd-label {
+        font-size: 14px;
+        color: #8b9ab8;
+      }
+      .dd-label.chosen {
+        color: #16e944;
+      }
+      .dd-arrow {
+        font-size: 11px;
+        color: #8b9ab8;
+        transition: transform 0.2s;
+      }
+      .dd-trigger.open .dd-arrow {
+        transform: rotate(180deg);
+      }
+      .dd-list {
+        display: none;
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        right: 0;
+        background: #1a2235;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        max-height: 220px;
+        overflow-y: auto;
+        z-index: 99;
+      }
+      .dd-list.open {
+        display: block;
+      }
+      .dd-item {
+        padding: 10px 14px;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .dd-item:hover {
+        background: rgba(245, 166, 35, 0.1);
+        color: #f5a623;
+      }
+      .dd-item.selected {
+        background: rgba(245, 166, 35, 0.12);
+        color: #f5a623;
+        font-weight: 600;
+      }
       .photo {
         width: 100%;
         max-width: 700px;
@@ -227,7 +292,7 @@
         color: #60a5fa;
       }
       .q-text {
-        font-size: 14px;
+        font-size: 16px;
         color: var(--text);
         line-height: 1.6;
         font-weight: 500;
@@ -238,7 +303,7 @@
         border: 1px solid var(--border);
         border-radius: 10px;
         padding: 11px 14px;
-        color: var(--text);
+        color: #16e944;
         font-family: "Vazirmatn", sans-serif;
         font-size: 14px;
         direction: rtl;
@@ -426,7 +491,7 @@
         padding: 2rem;
         font-family: "Vazirmatn", sans-serif;
         direction: rtl;
-        color: #f0f4ff;
+        color: #ffffff;
       }
       .sc-header {
         text-align: center;
@@ -487,7 +552,7 @@
         transition: width 0.3s;
       }
       .progress-label {
-        font-size: 12px;
+        font-size: 14px;
         color: var(--text2);
         margin-bottom: 6px;
         display: flex;
@@ -505,7 +570,7 @@
         <span class="dot-live"></span> زیندوو — جامی جیهانی ٢٠٢٦
       </div>
       <h1>🏆 پرسیارەکانت بنووسە</h1>
-      <p>ئەمریکا · مەکسیک · کەنەدا &nbsp;|&nbsp; ١١ی ئەمرز – ١٩ی تموز ٢٠٢٦</p>
+      <p>ئەمریکا · مەکسیک · کەنەدا &nbsp;|&nbsp; ١١ی ئازار – ١٩ی تموز ٢٠٢٦</p>
       <div class="hero-flags">🇫🇷 🇧🇷 🇦🇷 🇩🇪 🇪🇸 🇵🇹 🇬🇧 🇮🇶</div>
     </div>
 
@@ -524,7 +589,6 @@
           <div class="section-icon icon-yellow">🌍</div>
           <div class="section-title-text">
             <h2>پرسیاری یەکەم — هەڵبژاردەکان</h2>
-            <p>بۆچی باشترین هەڵبژاردە دەبێت؟</p>
           </div>
         </div>
 
@@ -532,15 +596,17 @@
           <div class="q-block">
             <div class="q-label">
               <span class="q-num">١</span
-              ><span class="q-text">سەپۆرتی کام هەڵبژاردە دەکەیت؟</span>
+              ><span class="q-text">هەڵبژاردەی دڵخوازت چییە؟</span>
             </div>
-            <input
-              class="q-input"
-              type="text"
-              id="q1"
-              placeholder="بنووسە..."
-              oninput="updateProgress()"
-            />
+
+            <div class="dd-wrap">
+              <div class="dd-trigger" id="tr1">
+                <span class="dd-label" id="lb1">هەڵبژاردەیەک هەڵبژێرە...</span
+                ><span class="dd-arrow">▾</span>
+              </div>
+              <div class="dd-list" id="dl1"></div>
+              <input type="hidden" id="q1" />
+            </div>
           </div>
           <div class="divider"></div>
           <div class="q-block">
@@ -548,13 +614,14 @@
               <span class="q-num">٢</span
               ><span class="q-text">کام هەڵبژاردە دەبێتە ئەسپی ڕەش؟</span>
             </div>
-            <input
-              class="q-input"
-              type="text"
-              id="q2"
-              placeholder="بنووسە..."
-              oninput="updateProgress()"
-            />
+            <div class="dd-wrap">
+              <div class="dd-trigger" id="tr2">
+                <span class="dd-label" id="lb2">هەڵبژاردەیەک هەڵبژێرە...</span
+                ><span class="dd-arrow">▾</span>
+              </div>
+              <div class="dd-list" id="dl2"></div>
+              <input type="hidden" id="q2" />
+            </div>
           </div>
           <div class="divider"></div>
           <div class="q-block">
@@ -562,13 +629,14 @@
               <span class="q-num">٣</span
               ><span class="q-text">کام هەڵبژاردە جامی جیهانی دەباتەوە؟</span>
             </div>
-            <input
-              class="q-input"
-              type="text"
-              id="q5"
-              placeholder="بنووسە..."
-              oninput="updateProgress()"
-            />
+            <div class="dd-wrap">
+              <div class="dd-trigger" id="tr3">
+                <span class="dd-label" id="lb3">هەڵبژاردەیەک هەڵبژێرە...</span
+                ><span class="dd-arrow">▾</span>
+              </div>
+              <div class="dd-list" id="dl3"></div>
+              <input type="hidden" id="q3" />
+            </div>
           </div>
         </div>
       </div>
@@ -579,7 +647,7 @@
           <div class="section-icon icon-blue">⚽</div>
           <div class="section-title-text">
             <h2>پرسیاری دووەم — یاریزانەکان</h2>
-            <p>کێ دەبێتە ستێرەی جامی جیهانی؟</p>
+            <p>کێ دەبێتە ئەستێرەی جامی جیهانی؟</p>
           </div>
         </div>
 
@@ -666,7 +734,17 @@
       class="fantasy"
       style="text-align: center; margin-bottom: 20px; font-size: 20px"
     >
-      بە سپۆنسەری سەرەکی
+      درووستکراوە لە لایەن :
+      <span style="color: #16e944">( Kaka Company )</span>
+    </p>
+    <p style="text-align: center; margin-bottom: 20px">
+      -----------------------------------------------------------------
+    </p>
+    <p
+      class="fantasy"
+      style="text-align: center; margin-bottom: 10px; font-size: 20px"
+    >
+      بە سپۆنسەری سەرەکی :
     </p>
     <p
       class="fantasy"
@@ -681,16 +759,31 @@
         ئاری مارکێت / گوڵەبەڕۆژەی بەتام / مەحمود غاز فرۆش</span
       >
     </p>
+    <p style="text-align: center; margin-bottom: 10px">
+      -----------------------------------------------------------------
+    </p>
+    <p style="text-align: center; margin-bottom: 20px">هاوکاران :</p>
+    <p style="text-align: center; color: #16e944">باغەوان هیوا</p>
+    <p style="text-align: center; color: #16e944">سان هێمن</p>
+    <p style="text-align: center; color: #16e944">ئاری هیوا</p>
+    <p style="text-align: center; color: #16e944">محمود محمد</p>
+    <p style="text-align: center; color: #16e944">سەهل سامی</p>
+    <p style="text-align: center; color: #16e944">بەڵێن سەلام</p>
+    <p style="text-align: center; color: #16e944; margin-bottom: 10px">
+      یاد ئەمجەت
+    </p>
+    <p style="text-align: center; margin-bottom: 20px">
+      -----------------------------------------------------------------
+    </p>
+    <p style="text-align: center; color: #ecfd00; margin-bottom: 60px">
+      سوپاس بۆ هەموو لایەک
+    </p>
 
-    <!-- MODAL: answers view -->
     <div class="modal-overlay" id="modal">
       <div class="modal">
         <div class="modal-icon">🏆</div>
         <h3>پێشبینیەکانت تۆمارکران!</h3>
-        <p>
-          ئەمانە پێشبینیەکانتن بۆ جامی جیهانی ٢٠٢٦. مانەوەی جامی جیهانی دڵخۆش
-          بێت!
-        </p>
+        <p>ئەمانە پێشبینیەکانتن بۆ جامی جیهانی ٢٠٢٦.</p>
         <div class="modal-answers" id="modal-answers"></div>
         <div class="modal-btns">
           <button class="btn-screenshot" onclick="showScreenshot()">
@@ -732,16 +825,16 @@
     <img src="friends.jpeg" class="photo" alt="friends" />
     <script>
       const questions = [
-        "سەپۆرتی کام هەڵبژاردە",
+        "هەڵبژاردەی دڵخوازت",
         "ئەسپی ڕەش",
-        "قازانجکەری جامی جیهانی",
+        "براوەی جامی جیهانی",
         "باشترین یاریزان",
         "باشترین یاریزانی لاو",
         "گۆڵکاری جامی جیهانی",
         "ئەسیستکاری جامی جیهانی",
         "باشترین گۆلچی",
       ];
-      const qIds = ["q1", "q2", "q5", "q6", "q7", "q8", "q9", "q10"];
+      const qIds = ["q1", "q2", "q3", "q6", "q7", "q8", "q9", "q10"];
 
       function updateProgress() {
         let filled = qIds.filter((id) => {
@@ -752,7 +845,6 @@
         document.getElementById("progress-bar").style.width =
           (filled / 8) * 100 + "%";
       }
-
       function submitAnswers() {
         const answers = qIds.map((id, i) => {
           const el = document.getElementById(id);
@@ -916,6 +1008,190 @@
           .replace(/>/g, "&gt;")
           .replace(/"/g, "&quot;");
       }
+      var TEAMS = [
+        "Algeria",
+        "Argentina",
+        "Australia",
+        "Austria",
+        "Belgium",
+        "Bosnia and Herzegovina",
+        "Brazil",
+        "Cabo Verde",
+        "Canada",
+        "Colombia",
+        "Congo DR",
+        "Croatia",
+        "Curacao",
+        "Czechia",
+        "Ecuador",
+        "Egypt",
+        "England",
+        "France",
+        "Germany",
+        "Ghana",
+        "Haiti",
+        "Iraq",
+        "Iran",
+        "Japan",
+        "Jordan",
+        "Korea Republic",
+        "Mexico",
+        "Morocco",
+        "Netherlands",
+        "New Zealand",
+        "Norway",
+        "Panama",
+        "Paraguay",
+        "Portugal",
+        "Qatar",
+        "Saudi Arabia",
+        "Scotland",
+        "Senegal",
+        "South Africa",
+        "Spain",
+        "Sweden",
+        "Switzerland",
+        "Tunisia",
+        "Turkey",
+        "Uruguay",
+        "USA",
+        "Uzbekistan",
+      ];
+
+      function setupDropdown(triggerId, listId, labelId, inputId) {
+        const trigger = document.getElementById(triggerId);
+        const list = document.getElementById(listId);
+        const label = document.getElementById(labelId);
+        const input = document.getElementById(inputId);
+
+        TEAMS.forEach(function (t) {
+          const item = document.createElement("div");
+          item.className = "dd-item";
+          item.textContent = t;
+          item.onclick = function (e) {
+            e.stopPropagation();
+
+            input.value = t;
+            label.textContent = t;
+            label.classList.add("chosen");
+
+            list
+              .querySelectorAll(".dd-item")
+              .forEach((x) => x.classList.remove("selected"));
+            item.classList.add("selected");
+
+            list.classList.remove("open");
+            trigger.classList.remove("open");
+          };
+
+          list.appendChild(item);
+        });
+
+        trigger.onclick = function (e) {
+          e.stopPropagation();
+          updateProgress();
+
+          document.querySelectorAll(".dd-list").forEach((x) => {
+            if (x !== list) x.classList.remove("open");
+          });
+
+          document.querySelectorAll(".dd-trigger").forEach((x) => {
+            if (x !== trigger) x.classList.remove("open");
+          });
+
+          list.classList.toggle("open");
+          trigger.classList.toggle("open");
+        };
+      }
+      function setupDropdown(triggerId, listId, labelId, inputId) {
+        const trigger = document.getElementById(triggerId);
+        const list = document.getElementById(listId);
+        const label = document.getElementById(labelId);
+        const input = document.getElementById(inputId);
+
+        TEAMS.forEach(function (t) {
+          const item = document.createElement("div");
+          item.className = "dd-item";
+          item.textContent = t;
+          item.onclick = function (e) {
+            e.stopPropagation();
+            input.value = t;
+            label.textContent = t;
+            label.classList.add("chosen");
+            list
+              .querySelectorAll(".dd-item")
+              .forEach((x) => x.classList.remove("selected"));
+            item.classList.add("selected");
+            list.classList.remove("open");
+            trigger.classList.remove("open");
+            updateProgress(); // ✅ تەنها ئێرە
+          };
+          list.appendChild(item);
+        });
+
+        trigger.onclick = function (e) {
+          e.stopPropagation();
+          document.querySelectorAll(".dd-list").forEach((x) => {
+            if (x !== list) x.classList.remove("open");
+          });
+          document.querySelectorAll(".dd-trigger").forEach((x) => {
+            if (x !== trigger) x.classList.remove("open");
+          });
+          list.classList.toggle("open");
+          trigger.classList.toggle("open");
+        };
+      }
+
+      setupDropdown("tr1", "dl1", "lb1", "q1");
+      setupDropdown("tr2", "dl2", "lb2", "q2");
+      setupDropdown("tr3", "dl3", "lb3", "q3");
+
+      document.addEventListener("click", function () {
+        document
+          .querySelectorAll(".dd-list")
+          .forEach((x) => x.classList.remove("open"));
+        document
+          .querySelectorAll(".dd-trigger")
+          .forEach((x) => x.classList.remove("open"));
+      });
+      setupDropdown("tr1", "dl1", "lb1", "q1");
+      function updateProgress() {
+        let filled = qIds.filter((id) => {
+          const el = document.getElementById(id);
+          return el && el.value.trim();
+        }).length;
+        document.getElementById("prog-count").textContent = filled + " / 8";
+        document.getElementById("progress-bar").style.width =
+          (filled / 8) * 100 + "%";
+      }
+      setupDropdown("tr2", "dl2", "lb2", "q2");
+      function updateProgress() {
+        let filled = qIds.filter((id) => {
+          const el = document.getElementById(id);
+          return el && el.value.trim();
+        }).length;
+        document.getElementById("prog-count").textContent = filled + " / 8";
+        document.getElementById("progress-bar").style.width =
+          (filled / 8) * 100 + "%";
+      }
+      setupDropdown("tr3", "dl3", "lb3", "q3");
+      function updateProgress() {
+        let filled = qIds.filter((id) => {
+          const el = document.getElementById(id);
+          return el && el.value.trim();
+        }).length;
+        document.getElementById("prog-count").textContent = filled + " / 8";
+        document.getElementById("progress-bar").style.width =
+          (filled / 8) * 100 + "%";
+      }
+      document.addEventListener("click", function () {
+        document
+          .querySelectorAll(".dd-list")
+          .forEach((x) => x.classList.remove("open"));
+        document
+          .querySelectorAll(".dd-trigger")
+          .forEach((x) => x.classList.remove("open"));
+      });
     </script>
   </body>
 </html>

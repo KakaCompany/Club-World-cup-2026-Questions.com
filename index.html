@@ -8,7 +8,39 @@
       href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
+      .photo {
+        width: 100%;
+        max-width: 700px;
+        border-radius: 12px;
+        animation: floatEffect 4s ease-in-out infinite;
+        transform-origin: center;
+        will-change: transform;
+      }
+
+      @keyframes floatEffect {
+        0% {
+          transform: translateY(0px) scale(1);
+        }
+        50% {
+          transform: translateY(-8px) scale(1.02);
+        }
+        100% {
+          transform: translateY(0px) scale(1);
+        }
+      }
+      .photo {
+        max-width: 100%;
+        max-height: 100vh;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+      }
+      .photo:active,
+      .photo:hover {
+        animation-play-state: paused;
+      }
       :root {
         --bg: #0a0e1a;
         --surface: #111827;
@@ -353,6 +385,91 @@
       .btn-close:hover {
         background: rgba(255, 255, 255, 0.06);
       }
+      .btn-screenshot {
+        background: linear-gradient(135deg, #1d4ed8, #2563eb);
+        border: none;
+        color: #fff;
+        font-family: "Vazirmatn", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 10px 24px;
+        border-radius: 10px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition:
+          opacity 0.15s,
+          transform 0.15s;
+      }
+      .btn-screenshot:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+      .btn-screenshot:active {
+        transform: scale(0.97);
+      }
+      .modal-btns {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      /* Screenshot card */
+      #screenshot-card {
+        position: fixed;
+        top: -9999px;
+        left: -9999px;
+        width: 500px;
+        background: #111827;
+        border-radius: 20px;
+        padding: 2rem;
+        font-family: "Vazirmatn", sans-serif;
+        direction: rtl;
+        color: #f0f4ff;
+      }
+      .sc-header {
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+      .sc-header .sc-icon {
+        font-size: 36px;
+      }
+      .sc-header h2 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-top: 8px;
+        color: #f5a623;
+      }
+      .sc-header p {
+        font-size: 12px;
+        color: #8b9ab8;
+        margin-top: 4px;
+      }
+      .sc-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 9px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        font-size: 13px;
+      }
+      .sc-row:last-child {
+        border-bottom: none;
+      }
+      .sc-q {
+        color: #8b9ab8;
+      }
+      .sc-a {
+        color: #f5a623;
+        font-weight: 600;
+      }
+      .sc-footer {
+        text-align: center;
+        margin-top: 1.2rem;
+        font-size: 11px;
+        color: #4b5a72;
+      }
 
       /* PROGRESS */
       .progress-bar-wrap {
@@ -380,6 +497,10 @@
   </head>
   <body>
     <div class="hero">
+      <p class="fantasy" style="color: white; font-size: 18px">
+        تایبەتە بە فانتاسی جامی جیهانی گروپی (
+        <span style="color: #16e944">خۆمانە</span> )
+      </p>
       <div class="hero-badge">
         <span class="dot-live"></span> زیندوو — جامی جیهانی ٢٠٢٦
       </div>
@@ -391,7 +512,7 @@
     <div class="container">
       <div class="progress-label">
         <span>پرسیارەکان</span>
-        <span id="prog-count">0 / 10</span>
+        <span id="prog-count">0 / 8</span>
       </div>
       <div class="progress-bar-wrap">
         <div class="progress-bar-fill" id="progress-bar"></div>
@@ -439,38 +560,6 @@
           <div class="q-block">
             <div class="q-label">
               <span class="q-num">٣</span
-              ><span class="q-text"
-                >کام هەڵبژاردە دەبێتە خراپترین هەڵبژاردە؟</span
-              >
-            </div>
-            <input
-              class="q-input"
-              type="text"
-              id="q3"
-              placeholder="بنووسە..."
-              oninput="updateProgress()"
-            />
-          </div>
-          <div class="divider"></div>
-          <div class="q-block">
-            <div class="q-label">
-              <span class="q-num">٤</span
-              ><span class="q-text"
-                >بەڕای تۆ کام هەڵبژاردەی بەهێز لە کۆمەڵەکان دەردەکرێت؟</span
-              >
-            </div>
-            <input
-              class="q-input"
-              type="text"
-              id="q4"
-              placeholder="بنووسە..."
-              oninput="updateProgress()"
-            />
-          </div>
-          <div class="divider"></div>
-          <div class="q-block">
-            <div class="q-label">
-              <span class="q-num">٥</span
               ><span class="q-text">کام هەڵبژاردە جامی جیهانی دەباتەوە؟</span>
             </div>
             <input
@@ -573,8 +662,27 @@
         </button>
       </div>
     </div>
+    <p
+      class="fantasy"
+      style="text-align: center; margin-bottom: 20px; font-size: 20px"
+    >
+      بە سپۆنسەری سەرەکی
+    </p>
+    <p
+      class="fantasy"
+      style="
+        color: white;
+        font-size: 18px;
+        text-align: center;
+        margin-bottom: 40px;
+      "
+    >
+      <span style="color: #16e944">
+        ئاری مارکێت / گوڵەبەڕۆژەی بەتام / مەحمود غاز فرۆش</span
+      >
+    </p>
 
-    <!-- MODAL -->
+    <!-- MODAL: answers view -->
     <div class="modal-overlay" id="modal">
       <div class="modal">
         <div class="modal-icon">🏆</div>
@@ -584,16 +692,48 @@
           بێت!
         </p>
         <div class="modal-answers" id="modal-answers"></div>
-        <button class="btn-close" onclick="closeModal()">داخستن</button>
+        <div class="modal-btns">
+          <button class="btn-screenshot" onclick="showScreenshot()">
+            📸 screenshot
+          </button>
+          <button class="btn-close" onclick="closeModal()">داخستن</button>
+        </div>
       </div>
     </div>
 
+    <!-- MODAL: screenshot preview -->
+    <div class="modal-overlay" id="modal-sc">
+      <div class="modal" style="max-width: 560px; padding: 1.5rem">
+        <p
+          id="sc-hint"
+          style="
+            font-size: 13px;
+            color: var(--text2);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+          "
+        ></p>
+        <div
+          id="svg-container"
+          style="border-radius: 12px; overflow: hidden; text-align: center"
+        ></div>
+        <div class="modal-btns" style="margin-top: 1rem">
+          <button
+            class="btn-close"
+            onclick="
+              document.getElementById('modal-sc').classList.remove('open')
+            "
+          >
+            داخستن
+          </button>
+        </div>
+      </div>
+    </div>
+    <img src="friends.jpeg" class="photo" alt="friends" />
     <script>
       const questions = [
         "سەپۆرتی کام هەڵبژاردە",
         "ئەسپی ڕەش",
-        "خراپترین هەڵبژاردە",
-        "بەهێزترین لە کۆمەڵ",
         "قازانجکەری جامی جیهانی",
         "باشترین یاریزان",
         "باشترین یاریزانی لاو",
@@ -601,22 +741,23 @@
         "ئەسیستکاری جامی جیهانی",
         "باشترین گۆلچی",
       ];
+      const qIds = ["q1", "q2", "q5", "q6", "q7", "q8", "q9", "q10"];
 
       function updateProgress() {
-        let filled = 0;
-        for (let i = 1; i <= 10; i++) {
-          if (document.getElementById("q" + i).value.trim()) filled++;
-        }
-        document.getElementById("prog-count").textContent = filled + " / 10";
+        let filled = qIds.filter((id) => {
+          const el = document.getElementById(id);
+          return el && el.value.trim();
+        }).length;
+        document.getElementById("prog-count").textContent = filled + " / 8";
         document.getElementById("progress-bar").style.width =
-          (filled / 10) * 100 + "%";
+          (filled / 8) * 100 + "%";
       }
 
       function submitAnswers() {
-        const answers = [];
-        for (let i = 1; i <= 10; i++) {
-          answers.push(document.getElementById("q" + i).value.trim());
-        }
+        const answers = qIds.map((id, i) => {
+          const el = document.getElementById(id);
+          return el ? el.value.trim() : "";
+        });
         const filled = answers.filter((a) => a).length;
         if (filled === 0) {
           alert("تکایە لانی کەم یەک وەڵام بنووسە!");
@@ -642,6 +783,139 @@
       document.getElementById("modal").addEventListener("click", function (e) {
         if (e.target === this) closeModal();
       });
+
+      function showScreenshot() {
+        const answers = qIds.map((id) => {
+          const el = document.getElementById(id);
+          return el ? el.value.trim() : "";
+        });
+        const filled = answers
+          .map((a, i) => (a ? { q: questions[i], a } : null))
+          .filter(Boolean);
+        if (!filled.length) return;
+
+        const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+
+        const W = 500,
+          pad = 32,
+          rowH = 52,
+          headerH = 144,
+          footerH = 44;
+        const H = headerH + filled.length * rowH + footerH;
+        const scale = 2;
+
+        const canvas = document.createElement("canvas");
+        canvas.width = W * scale;
+        canvas.height = H * scale;
+        const ctx = canvas.getContext("2d");
+        ctx.scale(scale, scale);
+
+        // BG
+        ctx.fillStyle = "#111827";
+        ctx.fillRect(0, 0, W, H);
+
+        // Top bar
+        const g = ctx.createLinearGradient(0, 0, W, 0);
+        g.addColorStop(0, "#f5a623");
+        g.addColorStop(1, "#e8390d");
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, W, 5);
+
+        // Trophy
+        ctx.font = "30px serif";
+        ctx.textAlign = "center";
+        ctx.fillText("🏆", W / 2, 50);
+
+        // Title
+        ctx.font = "bold 15px Arial";
+        ctx.fillStyle = "#f5a623";
+        ctx.fillText("پێشبینیەکانم — جامی جیهانی ٢٠٢٦", W / 2, 80);
+
+        // Subtitle
+        ctx.font = "11px Arial";
+        ctx.fillStyle = "#8b9ab8";
+        ctx.fillText("America - Mexico - Canada", W / 2, 100);
+
+        // Divider
+        ctx.strokeStyle = "#1e2d45";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(pad, 118);
+        ctx.lineTo(W - pad, 118);
+        ctx.stroke();
+
+        // Rows
+        filled.forEach((item, idx) => {
+          const y = headerH + idx * rowH;
+          const midY = y + rowH / 2;
+
+          if (idx > 0) {
+            ctx.strokeStyle = "#1a2535";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(pad, y);
+            ctx.lineTo(W - pad, y);
+            ctx.stroke();
+          }
+
+          // Badge
+          ctx.fillStyle = "#2a1f08";
+          ctx.beginPath();
+          ctx.roundRect(pad, midY - 12, 22, 22, 4);
+          ctx.fill();
+          ctx.font = "bold 11px Arial";
+          ctx.fillStyle = "#f5a623";
+          ctx.textAlign = "center";
+          ctx.fillText(idx + 1, pad + 11, midY + 4);
+
+          // Question label (right aligned)
+          ctx.font = "12px Arial";
+          ctx.fillStyle = "#8b9ab8";
+          ctx.textAlign = "right";
+          ctx.fillText(item.q, W - pad, midY + 5);
+
+          // Answer (left aligned after badge)
+          ctx.font = "bold 13px Arial";
+          ctx.fillStyle = "#f5a623";
+          ctx.textAlign = "left";
+          ctx.fillText(item.a, pad + 30, midY + 5);
+        });
+
+        // Bottom bar
+        ctx.fillStyle = g;
+        ctx.fillRect(0, H - 5, W, 5);
+
+        // Footer
+        ctx.font = "10px Arial";
+        ctx.fillStyle = "#374151";
+        ctx.textAlign = "center";
+        ctx.fillText("FIFA World Cup 2026", W / 2, H - 14);
+
+        // Show as <img> — mobile can long-press to save, desktop right-click
+        const dataURL = canvas.toDataURL("image/png");
+        const container = document.getElementById("svg-container");
+        container.innerHTML = `<img src="${dataURL}" style="max-width:100%;border-radius:12px;" alt="پێشبینیەکان">`;
+
+        const hint = document.getElementById("sc-hint");
+        if (isMobile) {
+          hint.innerHTML =
+            '📱 پەنجەت بگرە لەسەر وێنەکە ← <strong style="color:var(--text)">پاشەکەوتی کردن</strong>';
+        } else {
+          hint.innerHTML =
+            '🖥️ راستکلیک لەسەر وێنەکە ← <strong style="color:var(--text)">Save image as</strong>';
+        }
+
+        document.getElementById("modal").classList.remove("open");
+        document.getElementById("modal-sc").classList.add("open");
+      }
+
+      function escXML(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
     </script>
   </body>
 </html>

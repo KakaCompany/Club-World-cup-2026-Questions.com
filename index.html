@@ -84,23 +84,13 @@
         will-change: transform;
       }
 
-      @keyframes floatEffect {
-        0% {
-          transform: translateY(0px) scale(1);
-        }
-        50% {
-          transform: translateY(-8px) scale(1.02);
-        }
-        100% {
-          transform: translateY(0px) scale(1);
-        }
-      }
       .photo {
         max-width: 100%;
         max-height: 100vh;
         width: auto;
         height: auto;
         object-fit: contain;
+        align-items: center;
       }
       .photo:active,
       .photo:hover {
@@ -358,7 +348,7 @@
         transform: scale(0.98);
       }
 
-      /* RESULT MODAL */
+      /* NAME MODAL */
       .modal-overlay {
         display: none;
         position: fixed;
@@ -557,6 +547,52 @@
         margin-bottom: 6px;
         display: flex;
         justify-content: space-between;
+      }
+
+      /* NAME INPUT STYLE */
+      .name-input {
+        width: 100%;
+        background: var(--surface2);
+        border: 1px solid rgba(245, 166, 35, 0.4);
+        border-radius: 10px;
+        padding: 12px 16px;
+        color: #16e944;
+        font-family: "Vazirmatn", sans-serif;
+        font-size: 16px;
+        direction: rtl;
+        transition: border-color 0.2s;
+        outline: none;
+        margin-top: 0.5rem;
+        text-align: center;
+      }
+      .name-input:focus {
+        border-color: rgba(245, 166, 35, 0.8);
+        background: rgba(245, 166, 35, 0.06);
+      }
+      .name-input::placeholder {
+        color: var(--text2);
+        opacity: 0.6;
+      }
+      .btn-confirm {
+        background: linear-gradient(135deg, var(--gold), #e8900a);
+        color: #0a0e1a;
+        font-family: "Vazirmatn", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        padding: 12px 36px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition:
+          transform 0.15s,
+          opacity 0.15s;
+      }
+      .btn-confirm:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+      .btn-confirm:active {
+        transform: scale(0.98);
       }
     </style>
   </head>
@@ -762,7 +798,9 @@
     <p style="text-align: center; margin-bottom: 10px">
       -----------------------------------------------------------------
     </p>
-    <p style="text-align: center; margin-bottom: 20px">هاوکاران :</p>
+    <p style="text-align: center; margin-bottom: 20px; font-size: 20px">
+      هاوکاران :
+    </p>
     <p style="text-align: center; color: #16e944">باغەوان هیوا</p>
     <p style="text-align: center; color: #16e944">سان هێمن</p>
     <p style="text-align: center; color: #16e944">ئاری هیوا</p>
@@ -777,10 +815,43 @@
     <p style="text-align: center; margin-bottom: 20px">
       -----------------------------------------------------------------
     </p>
-    <p style="text-align: center; color: #ecfd00; margin-bottom: 60px">
+    <p
+      style="
+        text-align: center;
+        color: #ecfd00;
+        margin-bottom: 60px;
+        font-size: 22px;
+      "
+    >
       سوپاس بۆ هەموو لایەک
     </p>
 
+    <!-- NAME MODAL -->
+    <div class="modal-overlay" id="modal-name">
+      <div class="modal">
+        <div class="modal-icon">👤</div>
+        <h3>ناوت بنووسە</h3>
+        <p>
+          پێش تۆمارکردنی وەڵامەکان، تکایە ناوت بنووسە بۆ ئەوەی لە screenshot
+          پیشان بدرێت.
+        </p>
+        <input
+          class="name-input"
+          type="text"
+          id="user-name"
+          placeholder="ناوت بنووسە..."
+          maxlength="40"
+        />
+        <br /><br />
+        <div class="modal-btns">
+          <button class="btn-confirm" onclick="confirmName()">
+            بەردەوامبوون ✓
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT MODAL -->
     <div class="modal-overlay" id="modal">
       <div class="modal">
         <div class="modal-icon">🏆</div>
@@ -838,6 +909,8 @@
       ];
       const qIds = ["q1", "q2", "q3", "q6", "q7", "q8", "q9", "q10"];
 
+      var userName = "";
+
       function updateProgress() {
         let filled = qIds.filter((id) => {
           const el = document.getElementById(id);
@@ -847,8 +920,28 @@
         document.getElementById("progress-bar").style.width =
           (filled / 8) * 100 + "%";
       }
+
       function submitAnswers() {
-        const answers = qIds.map((id, i) => {
+        // Show name modal first
+        document.getElementById("modal-name").classList.add("open");
+        setTimeout(() => {
+          document.getElementById("user-name").focus();
+        }, 300);
+      }
+
+      function confirmName() {
+        const nameInput = document.getElementById("user-name");
+        userName = nameInput.value.trim();
+        if (!userName) {
+          nameInput.style.borderColor = "rgba(232,57,45,0.7)";
+          setTimeout(() => {
+            nameInput.style.borderColor = "rgba(245,166,35,0.4)";
+          }, 1200);
+          return;
+        }
+        document.getElementById("modal-name").classList.remove("open");
+
+        const answers = qIds.map((id) => {
           const el = document.getElementById(id);
           return el ? el.value.trim() : "";
         });
@@ -869,6 +962,15 @@
         });
         document.getElementById("modal").classList.add("open");
       }
+
+      // Allow Enter key in name input
+      document.addEventListener("DOMContentLoaded", function () {
+        document
+          .getElementById("user-name")
+          .addEventListener("keydown", function (e) {
+            if (e.key === "Enter") confirmName();
+          });
+      });
 
       function closeModal() {
         document.getElementById("modal").classList.remove("open");
@@ -893,7 +995,7 @@
         const W = 500,
           pad = 32,
           rowH = 52,
-          headerH = 144,
+          headerH = 170, // تaller to fit name
           footerH = 44;
         const H = headerH + filled.length * rowH + footerH;
         const scale = 2;
@@ -930,12 +1032,19 @@
         ctx.fillStyle = "#8b9ab8";
         ctx.fillText("America - Mexico - Canada", W / 2, 100);
 
+        // User name
+        if (userName) {
+          ctx.font = "bold 22px Arial";
+          ctx.fillStyle = "#16e944";
+          ctx.fillText(userName, W / 2, 138);
+        }
+
         // Divider
         ctx.strokeStyle = "#1e2d45";
         ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(pad, 118);
-        ctx.lineTo(W - pad, 118);
+        ctx.moveTo(pad, 160);
+        ctx.lineTo(W - pad, 160);
         ctx.stroke();
 
         // Rows
@@ -985,7 +1094,7 @@
         ctx.textAlign = "center";
         ctx.fillText("FIFA World Cup 2026", W / 2, H - 14);
 
-        // Show as <img> — mobile can long-press to save, desktop right-click
+        // Show as <img>
         const dataURL = canvas.toDataURL("image/png");
         const container = document.getElementById("svg-container");
         container.innerHTML = `<img src="${dataURL}" style="max-width:100%;border-radius:12px;" alt="پێشبینیەکان">`;
@@ -1072,51 +1181,6 @@
           item.textContent = t;
           item.onclick = function (e) {
             e.stopPropagation();
-
-            input.value = t;
-            label.textContent = t;
-            label.classList.add("chosen");
-
-            list
-              .querySelectorAll(".dd-item")
-              .forEach((x) => x.classList.remove("selected"));
-            item.classList.add("selected");
-
-            list.classList.remove("open");
-            trigger.classList.remove("open");
-          };
-
-          list.appendChild(item);
-        });
-
-        trigger.onclick = function (e) {
-          e.stopPropagation();
-          updateProgress();
-
-          document.querySelectorAll(".dd-list").forEach((x) => {
-            if (x !== list) x.classList.remove("open");
-          });
-
-          document.querySelectorAll(".dd-trigger").forEach((x) => {
-            if (x !== trigger) x.classList.remove("open");
-          });
-
-          list.classList.toggle("open");
-          trigger.classList.toggle("open");
-        };
-      }
-      function setupDropdown(triggerId, listId, labelId, inputId) {
-        const trigger = document.getElementById(triggerId);
-        const list = document.getElementById(listId);
-        const label = document.getElementById(labelId);
-        const input = document.getElementById(inputId);
-
-        TEAMS.forEach(function (t) {
-          const item = document.createElement("div");
-          item.className = "dd-item";
-          item.textContent = t;
-          item.onclick = function (e) {
-            e.stopPropagation();
             input.value = t;
             label.textContent = t;
             label.classList.add("chosen");
@@ -1126,7 +1190,7 @@
             item.classList.add("selected");
             list.classList.remove("open");
             trigger.classList.remove("open");
-            updateProgress(); // ✅ تەنها ئێرە
+            updateProgress();
           };
           list.appendChild(item);
         });
@@ -1148,44 +1212,6 @@
       setupDropdown("tr2", "dl2", "lb2", "q2");
       setupDropdown("tr3", "dl3", "lb3", "q3");
 
-      document.addEventListener("click", function () {
-        document
-          .querySelectorAll(".dd-list")
-          .forEach((x) => x.classList.remove("open"));
-        document
-          .querySelectorAll(".dd-trigger")
-          .forEach((x) => x.classList.remove("open"));
-      });
-      setupDropdown("tr1", "dl1", "lb1", "q1");
-      function updateProgress() {
-        let filled = qIds.filter((id) => {
-          const el = document.getElementById(id);
-          return el && el.value.trim();
-        }).length;
-        document.getElementById("prog-count").textContent = filled + " / 8";
-        document.getElementById("progress-bar").style.width =
-          (filled / 8) * 100 + "%";
-      }
-      setupDropdown("tr2", "dl2", "lb2", "q2");
-      function updateProgress() {
-        let filled = qIds.filter((id) => {
-          const el = document.getElementById(id);
-          return el && el.value.trim();
-        }).length;
-        document.getElementById("prog-count").textContent = filled + " / 8";
-        document.getElementById("progress-bar").style.width =
-          (filled / 8) * 100 + "%";
-      }
-      setupDropdown("tr3", "dl3", "lb3", "q3");
-      function updateProgress() {
-        let filled = qIds.filter((id) => {
-          const el = document.getElementById(id);
-          return el && el.value.trim();
-        }).length;
-        document.getElementById("prog-count").textContent = filled + " / 8";
-        document.getElementById("progress-bar").style.width =
-          (filled / 8) * 100 + "%";
-      }
       document.addEventListener("click", function () {
         document
           .querySelectorAll(".dd-list")
